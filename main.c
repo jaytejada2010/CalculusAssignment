@@ -6,7 +6,7 @@
 #define SIZE 100
 
 struct fraction {
-    int numerator, denominator;
+    int whole, numerator, denominator;
 };
 
 /**
@@ -135,13 +135,24 @@ void decimal_to_fraction(char *input){
     frac.numerator /= GCF;
     frac.denominator /= GCF;
 
-    printf("%s => %d/%d", input, frac.numerator, frac.denominator);
+    if(frac.numerator < frac.denominator){
+        printf("%s => %d/%d", input, frac.numerator, frac.denominator);
+    } else if(frac.numerator > frac.denominator && frac.denominator != 1){
+        frac.whole = frac.numerator / frac.denominator;
+        frac.numerator %= denominator;
+        printf("%s => %d %d/%d", input, frac.whole, frac.numerator, frac.denominator);
+    } else {
+        printf("%s => %d", input, frac.numerator / frac.denominator);
+    }
 }
 
 void fraction_to_decimal(char *input){
+    char temp[SIZE];
+    strcpy(temp, input);
+
     struct fraction frac;
 
-    frac.numerator = atof(strtok(input, "/"));
+    frac.numerator = atof(strtok(temp, "/"));
     frac.denominator = atof(strtok(NULL, "/"));
     float decimal = (float) frac.numerator / frac.denominator;
 
@@ -151,12 +162,19 @@ void fraction_to_decimal(char *input){
 void main(){
     char input[SIZE];
 
-    printf("Please enter a decimal or a fraction: ");
-    scanf("%s", input);
-    
-    switch(analyzeInput(input)){
-        case 0 : decimal_to_fraction(input); break;
-        case 1 : fraction_to_decimal(input); break;
-        default : printf("Invalid input");
-    }
+    char car;
+
+    do{
+        printf("\nPress [y] to terminate function: ");
+        printf("\nPlease enter a fraction or a decimal: ");
+        scanf("%s", input);
+        
+        if(strcmp(input, "y") != 0 && strcmp(input, "Y") != 0){
+            switch(analyzeInput(input)){
+                case 0 : decimal_to_fraction(input); break;
+                case 1 : fraction_to_decimal(input); break;
+                default : printf("Invalid input. Please try again!");
+            }
+        }
+    }while(strcmp(input, "y") != 0 && strcmp(input, "Y") != 0);
 }
