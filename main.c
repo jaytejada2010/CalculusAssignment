@@ -120,9 +120,16 @@ void decimal_to_fraction(char *input){
     /* split string: whole number and decimal point */
     float number = atof(temp);
     int whole_number = atoi(strtok(temp, "."));
-    int decimal = atoi(strtok(NULL, "."));
+    char *decimal_place = strtok(NULL, ".");
+    int decimal;
+    int trailing = 0;
 
     struct fraction frac;
+
+    if(decimal > 0){
+        printf("Input how many trailing decimal places that are repeating: ");
+        scanf("%d", &trailing);
+    }
 
     int denominator = findDenominator(decimal);
 
