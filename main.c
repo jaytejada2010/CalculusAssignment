@@ -75,7 +75,11 @@ void decimal_to_fraction(char *input){
 }
 
 void fraction_to_decimal(char *input){
-    printf("Fraction");
+    float numerator = atof(strtok(input, "/"));
+    float denominator = atof(strtok(NULL, "/"));
+    float decimal = numerator / denominator;
+
+    printf("%s => %.2f", input, decimal);
 }
 
 void main(){
