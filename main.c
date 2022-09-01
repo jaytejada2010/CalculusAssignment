@@ -70,8 +70,25 @@ int analyzeInput(char *input){
     return type;
 }
 
+int findDenominator(int number){
+    int denominator = 1;
+
+    while(number > 0){
+        denominator *= 10;
+        number /= 10;
+    }
+
+    return denominator;
+}
+
 void decimal_to_fraction(char *input){
-    printf("Decimal");
+    /* split string: whole number and decimal point */
+    int whole_number = atoi(strtok(input, "."));
+    int decimal = atoi(strtok(NULL, "."));
+
+    printf("%d %d %d", whole_number, decimal, findDenominator(decimal));
+
+    int denominator = 1;
 }
 
 void fraction_to_decimal(char *input){
