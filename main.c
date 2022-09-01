@@ -5,6 +5,10 @@
 
 #define SIZE 100
 
+struct fraction {
+    int numerator, denominator;
+};
+
 /**
  * @brief make sure the string only contain digits, . , /
  * 
@@ -70,6 +74,12 @@ int analyzeInput(char *input){
     return type;
 }
 
+/**
+ * @brief find the correct denominator
+ * 
+ * @param number decimal places
+ * @return ** int correct denominator
+ */
 int findDenominator(int number){
     int denominator = 1;
 
@@ -81,22 +91,61 @@ int findDenominator(int number){
     return denominator;
 }
 
+/**
+ * @brief find GCF of 2 numbers
+ * 
+ * @param num1 numerator
+ * @param num2 denominator
+ * @return ** int GCF
+ */
+int findGCF(int num1, int num2){
+    int GCF = 1;
+    int min = (num1 < num2) ? num1 : num2;
+
+    int x;
+
+    for(x = 2; x <= min; x++){
+        if(num1 % x == 0 && num2 % x == 0){
+            GCF = x;
+        }
+    }
+
+    return GCF;
+}
+
 void decimal_to_fraction(char *input){
+    char temp[SIZE];
+    strcpy(temp, input);
+
     /* split string: whole number and decimal point */
-    int whole_number = atoi(strtok(input, "."));
+    float number = atof(temp);
+    int whole_number = atoi(strtok(temp, "."));
     int decimal = atoi(strtok(NULL, "."));
 
-    printf("%d %d %d", whole_number, decimal, findDenominator(decimal));
+    struct fraction frac;
 
-    int denominator = 1;
+    int denominator = findDenominator(decimal);
+
+    /* convert to fraction */
+    frac.numerator = (int) (number * denominator);
+    frac.denominator = denominator;
+
+    /* lowest term */
+    int GCF = findGCF(frac.numerator, frac.denominator);
+    frac.numerator /= GCF;
+    frac.denominator /= GCF;
+
+    printf("%s => %d/%d", input, frac.numerator, frac.denominator);
 }
 
 void fraction_to_decimal(char *input){
-    float numerator = atof(strtok(input, "/"));
-    float denominator = atof(strtok(NULL, "/"));
-    float decimal = numerator / denominator;
+    struct fraction frac;
 
-    printf("%s => %.2f", input, decimal);
+    frac.numerator = atof(strtok(input, "/"));
+    frac.denominator = atof(strtok(NULL, "/"));
+    float decimal = (float) frac.numerator / frac.denominator;
+
+    printf("%s => %f", input, decimal);
 }
 
 void main(){
