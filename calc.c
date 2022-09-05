@@ -172,6 +172,17 @@ void decimal_to_fraction(char *input){
     frac.whole = whole_number;
     frac.numerator /= GCF;
     frac.denominator /= GCF;
+
+	/*
+    if(frac.numerator < frac.denominator){
+        printf("%s => %d/%d", input, frac.numerator, frac.denominator);
+    } else if(frac.numerator > frac.denominator && frac.denominator != 1){
+        frac.numerator = frac.numerator % frac.denominator;
+        printf("%s => %d %d/%d", input, frac.whole, frac.numerator, frac.denominator);
+    } else {
+        printf("%s => %d", input, frac.numerator / frac.denominator);
+    }
+    */
     
     if(whole_number == 0){
     	printf("%s => %d/%d", input, frac.numerator, frac.denominator);
